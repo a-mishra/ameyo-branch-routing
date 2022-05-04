@@ -1,0 +1,8 @@
+{
+  "name": "branch-routing",
+  "version": "0.0.0",
+  "minimumRequiredAmeyoVersion": "4.0.0",
+  "incompatibleAmeyoVersions": [],
+  "description": "Akash: Branch Routing Mapping Module",
+  "author": "Pooja Singh | poojasingh@ameyo.com"
+}

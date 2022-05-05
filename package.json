@@ -4,15 +4,23 @@
   "co-author": "Ashutosh Mishra | a-mishra@pm.me",
   "version": "1.0.0",
   "description": "Akash: Branch Routing Mapping Module",
-  "keywords": ["react", "akash", "ameyo", "module"],
+  "keywords": [
+    "react",
+    "akash",
+    "ameyo",
+    "module"
+  ],
   "main": "src/index.js",
   "dependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
+    "@emotion/react": "11.9.0",
+    "@emotion/styled": "11.8.1",
+    "@mui/material": "5.6.4",
+    "@mui/x-data-grid": "5.10.0",
+    "@reduxjs/toolkit": "1.8.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "react-scripts": "4.0.0",
-    "styled-components": "5.3.5"
+    "react-redux": "8.0.1",
+    "react-scripts": "4.0.0"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",
@@ -24,6 +32,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "homepage": "./"
 }

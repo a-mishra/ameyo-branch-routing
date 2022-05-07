@@ -9,6 +9,14 @@ const fontColors = {
   links: '#00AB88'
 }
 
+const cssReset = css`
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+
+`;
+
 const fonts = css`
 
     p {
@@ -124,6 +132,7 @@ const fonts = css`
 
 const globalStyle = () =>
   css([
+    cssReset,
     fonts,
   ]);
 

@@ -1,9 +1,7 @@
-import { palette } from "@mui/system";
-
 export function sendSuccessNotification(message) {
-  var client = window.AmeyoClient.init();
+  let client = window.AmeyoClient.init();
 
-  var toastNotificationData = {
+  let toastNotificationData = {
     type: "success",
     content: message
   };
@@ -11,30 +9,15 @@ export function sendSuccessNotification(message) {
 }
 
 export function sendFailureNotification(message) {
-  var client = window.AmeyoClient.init();
+  let client = window.AmeyoClient.init();
 
-  var toastNotificationData = {
+  let toastNotificationData = {
     type: "error",
     content: message
   };
   client.interface.trigger("toastNotification", toastNotificationData);
 }
 
-export function getIframeData() {
-  var urlObj = {};
-  var url = window.location.search.substring(1);
-  var vars = url.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var param = vars[i].split("=");
-    urlObj[param[0]] = param[1];
-  }
-  return urlObj;
-}
-
-export function getWidgetDataRefreshInterval() {
-  const refreshInterval = "60000";
-  return refreshInterval;
-}
 
 export const layout = {
   reponsiveCssValue: (min, max, projection_start, projection_start_value, projection_end, projection_end_value, comparator = null) => {
@@ -42,6 +25,9 @@ export const layout = {
   }
 }
 
+export const constants = {
+  customKey: 'branch-routing-data-test3'
+}
 
 
 const palette1 = {
@@ -60,5 +46,12 @@ const palette2 = {
   highlight2: '#293241' //GUNMETAL
 }
 
+const palette3 = {
+  primary: 'rgb(59,153,213)', // BDAZZLED BLUE
+  secondary: 'rgb(248, 248, 248)', // DARK SKY BLUE
+  neutral: 'rgb(230,238,244)', //LIGHT CYAN
+  highlight1: '#EE6C4D', //BRUNT SIENNA
+  highlight2: 'rgb(57, 172, 69)' //GUNMETAL
+}
 
-export const colors = palette2;
+export const colors = palette3;

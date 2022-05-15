@@ -40,8 +40,8 @@ export const Editor = ({refresh, tableData, deleteRecord}) => {
 
   const columns = [
     { field: 'dateAdded', headerName: 'Date Added', width: '200', align:'center', headerAlign: 'center', headerClassName: 'table-column-header' },
-    { field: 'campaign', headerName: 'Campaign', width: '225', align:'center', headerAlign: 'center', headerClassName: 'table-column-header' },
     { field: 'branchCode', headerName: 'Branch Code', width: '150', align:'center', headerAlign: 'center', headerClassName: 'table-column-header', editable: false },
+    { field: 'campaign', headerName: 'Campaign', width: '225', align:'center', headerAlign: 'center', headerClassName: 'table-column-header' },
     { field: 'nodeflow', headerName: 'Nodeflow', width: '225', align:'center', headerAlign: 'center', headerClassName: 'table-column-header',  editable: false },
     { field: 'actions', headerName: '', width: '50', align:'center', headerAlign: 'center', headerClassName: 'table-column-header',  editable: false, renderCell:((data)=>(<Actions deleteCallback={()=>{deleteRecord(data?.row?.id)}}/>))  },
   ];
@@ -88,7 +88,7 @@ const Wrapper = styled.div`
   position: relative;
 
   .table-container {
-    height: 600px;
+    height: 620px;
     width: 850px;
     margin-left: auto;
     margin-right: auto;

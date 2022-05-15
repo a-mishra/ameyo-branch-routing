@@ -25,29 +25,18 @@ const Actions = ({deleteCallback}) => {
 
 export const Editor = ({refresh, tableData, deleteRecord}) => {
 
- 
-    console.log('TABLE DATA IN EDITOR:', tableData)
-    let temp = tableData.map((item)=>{
-      return {
-        id: item?.id || 0,
-        dateAdded: item?.dateAdded,
-        campaign: item?.campaign?.campaignName,
-        branchCode: item?.branchCode,
-        nodeflow: item?.nodeflow?.name
-      }
-    })
+  console.log('TABLE DATA IN EDITOR:', tableData)
+  let temp = tableData.map((item)=>{
+    return {
+      id: item?.id || 0,
+      dateAdded: item?.dateAdded,
+      branchCode: item?.branchCode,
+      campaign: item?.campaign?.campaignName,
+      nodeflow: item?.nodeflow?.name
+    }
+  })
     
-    const rows = temp;
-
-
-  // const rows = [
-  //   { id: 1, dateAdded: '2022-05-12T12:45', campaign: 'Campaign1', branchCode: '121', nodeflow:'nodeflow12'},
-  //   { id: 2, dateAdded: '2022-05-12T12:45', campaign: 'Campaign1', branchCode: '232', nodeflow:'nodeflow13'},
-  //   { id: 3, dateAdded: '2022-05-12T12:45', campaign: 'Campaign1', branchCode: '234', nodeflow:'nodeflow43' },
-  //   { id: 4, dateAdded: '2022-05-12T12:45', campaign: 'Campaign2', branchCode: '453', nodeflow:'nodeflow23' },
-  //   { id: 5, dateAdded: '2022-05-12T12:45', campaign: 'Campaign3', branchCode: '123', nodeflow:'nodeflow13' },
-  //   { id: 6, dateAdded: '2022-05-12T12:45', campaign: 'Campaign3', branchCode: '124', nodeflow:'nodeflow15' },
-  // ];
+  const rows = temp
 
   const columns = [
     { field: 'dateAdded', headerName: 'Date Added', width: '200', align:'center', headerAlign: 'center', headerClassName: 'table-column-header' },

@@ -6,127 +6,32 @@ import { Adder } from "./components/adder";
 import { Editor } from "./components/editor";
 import globalStyles from "./global-styles";
 import {sendSuccessNotification, sendFailureNotification} from './utils/helper';
-import {getRecord} from './utils/logic';
+import { getTableData, getCampaigns, deleteRecord} from './utils/logic';
 import {constants} from './utils/constants'
 
 
 const App = () => {
 
   const [campaigns, setcampaigns] = useState([])
-
-  const getCampaigns = () => {
-
-    var client = window.AmeyoClient.init();
-    client.globalData.get("loggedInUser")
-    .then((response)=>{
-
-      let userType = response?.userType;
-
-      var requestObject = {
-          url: userType == 'Administrator' ? 'ameyorestapi/cc/campaigns/getAllCampaigns' : 'ameyorestapi/cc/campaigns/getAssigned',
-          headers: {
-              "content-type": "application/json"
-          },
-          method: "GET",
-      };
-      client.httpRequest.invokeAmeyo(requestObject)
-      .then((response)=>{
-        try {
-          let data = JSON.parse(response?.response);
-          let filterData = data.filter((item)=>{
-            return item.campaignType == 'Interactive Voice Application';
-          }); 
-          setcampaigns(filterData);
-        } catch(e) {
-          console.log('FAILED TO Parse CAMPAIGN LIST RESULT')
-          console.log(response);
-          console.log(e)
-        }
-      })
-      .catch((error)=>{
-        console.log('FAILED TO RECEIVE CAMPAIGN LIST')
-        console.log(error)
-      });
-    
-    })
-    .catch((error)=>{
-      console.log('FAILED TO RECEIVE LOGGED IN  USER')
-      console.log(error)
-    });
-
-  }
-
   const [tableData, settableData] = useState([])
 
-  const getTableData = () => {
-    // let client = window.AmeyoClient.init();
+  const initialize = () => {
+    getCampaigns().then((data)=>{setcampaigns(data)}).catch((e)=>{ sendFailureNotification('Error occured while getting campaigns!!!') });
+    getTableData().then((data)=>{settableData(data)}).catch((e)=>{ sendFailureNotification('Error occured while getting TableData!!!') });
+  }
 
-    // let filter = {
-    //   "customKey": constants.customKey
-    // }
-    // client.appConf.get(filter)
-    // .then((response)=>{
-    //   let id = response?.records?.[0]?.id >= 0 ? response?.records?.[0]?.id : -1;
-    //   if(id >= 0) {
-    //     let data = JSON.parse(response?.records[0]?.data);
-    //     settableData(data);
-    //   }
-    // })
-    // .catch((e)=>{
-    //   console.log('FAILED TO GET APP CONF DATA, tableRefersh')
-    //   console.log(e)
-    // })
-
-    getRecord()
-    .then((data)=>{
-      console.log('dataRecieved from getRecords')
-      settableData(data);
+  const handleDeleteRecord = (recordId) => {
+    deleteRecord(recordId).then(()=>{
+      sendSuccessNotification('Record Deleted')
+      initialize();
+    }).catch((e)=>{
+      sendFailureNotification('Error occured while deletion!!!')
     })
-    .catch((e)=>{
-      console.log('FAILED TO GET APP CONF DATA, tableRefersh')
-      console.log(e)
-    })
-
   }
 
   useEffect(() => {
-    getCampaigns();
-    getTableData();
+    initialize();
   }, [])
-
-  const deleteRecord = (recordId) => {
-    let client = window.AmeyoClient.init();
-
-    let filter = {
-      "customKey": constants.customKey
-    }
-    client.appConf.get(filter)
-    .then((response)=>{
-      let id = response?.records?.[0]?.id >= 0 ? response?.records?.[0]?.id : -1;
-      if(id >= 0) {
-        let data = JSON.parse(response?.records[0]?.data);
-        let filterData = data.filter((item)=>{
-          return item.id!= recordId;
-        });
-
-        let record = {
-          "id": id,
-          "data": JSON.stringify(filterData)
-          }
-          client.appConf.update(record).then(()=>{
-            sendSuccessNotification('Record Deleted')
-            getTableData();
-          }).catch(()=>{
-            sendFailureNotification('Failed')
-          });
-      }
-    })
-    .catch((e)=>{
-      console.log('FAILED TO GET APP CONF DATA, deleteRecord')
-      console.log(e)
-    })
-  }
-
   
   
   return (
@@ -138,8 +43,8 @@ const App = () => {
 
       <Global styles={globalStyles()} />
       <Wrapper>
-        <Adder  campaigns={campaigns} refresh={()=>{getTableData()}}/>
-        <Editor tableData={tableData} refresh={()=>{getTableData(); getCampaigns()}} deleteRecord={deleteRecord}/>
+        <Adder  campaigns={campaigns} refresh={()=>{initialize()}}/>
+        <Editor tableData={tableData} refresh={()=>{initialize()}} deleteRecord={handleDeleteRecord}/>
       </Wrapper>
     </>
 

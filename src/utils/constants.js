@@ -1,5 +1,5 @@
 export const constants = {
-    customKey: 'branch-routing-data-test3'
+    customKey: 'branch-routing-conf'
 }
 
   const palette1 = {

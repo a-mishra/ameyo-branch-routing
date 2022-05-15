@@ -4,10 +4,11 @@ import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import {sendSuccessNotification, sendFailureNotification, layout} from '../utils/helper'
+import {sendSuccessNotification, sendFailureNotification, layout, } from '../utils/helper'
 import {constants, colors} from '../utils/constants'
+import {getNodeflowsForCampaign, addRecord} from '../utils/logic'
 
 export const Adder = ({ campaigns, refresh }) => {
 
@@ -22,6 +23,8 @@ export const Adder = ({ campaigns, refresh }) => {
       case 'campaign':
         setCampaign(event?.target?.value);
         getNodeflowsForCampaign(event?.target?.value?.campaignId)
+        .then((data)=>{setNodeflows(data)})
+        .catch((e)=>{ sendFailureNotification('Error occured while getting Nodeflows for selected campaign!!!') });
       break;
 
       case 'branchCode':
@@ -38,87 +41,17 @@ export const Adder = ({ campaigns, refresh }) => {
 
   useEffect(() => {
     setNodeflows([]);
-    setBranchCode('');
   }, [campaigns])
   
-
-  const getNodeflowsForCampaign = (campaignId) => {
-    let client = window.AmeyoClient.init();
-
-    let requestObject = {
-        url: `ameyorestapi/voice/getAllCampaignDefaultFeatureContextForCampaign?campaignId=${campaignId}`,
-        headers: {
-            "content-type": "application/json"
-        },
-        method: "GET",
-    };
-
-    client.httpRequest.invokeAmeyo(requestObject)
-    .then((response)=>{
-      try {
-        let data = JSON.parse(response?.response);
-        let modData = data.map((item)=>{return({name: item.contextName, id: item.contextId})})
-        setNodeflows(modData);
-      } catch(e) {
-        console.log('FAILED TO Parse CAMPAIGN LIST RESULT')
-        console.log(response);
-        console.log(e)
-      }
-    })
-    .catch((e)=>{
-      console.log(`FAILED TO GET NODEFLOW LIST FOR CAMPAIGN ${campaignId}`);
-      console.log(e);
-    });
-  }
-
   const handleSave = () => {
-    let client = window.AmeyoClient.init();
-
-    let filter = {
-      "customKey": constants.customKey
-    }
-    client.appConf.get(filter)
-    .then((response)=>{
-      let id = response?.records?.[0]?.id >= 0 ? response?.records?.[0]?.id : -1;
-      if(id >= 0) {
-        // update record
-        let data = JSON.parse(response?.records[0]?.data);
-        data.push({id: `${campaign?.campaignId}-${branchCode}-${nodeflow?.id}`, campaign, branchCode, nodeflow, dateAdded: new Date().toISOString()});
-
-        let record = {
-          "id": id,
-          "data": JSON.stringify(data)
-          }
-          client.appConf.update(record).then(()=>{
-            sendSuccessNotification('Record Added')
-          }).catch(()=>{
-            sendFailureNotification('Failed')
-          });
-      }
-      else {
-        // create record
-        let data = [];
-        data.push({id: `${campaign?.campaignId}-${branchCode}-${nodeflow?.id}`, campaign, branchCode, nodeflow, dateAdded: new Date().toISOString()});
-
-        let record = {
-          "customKey": constants.customKey,
-          "data": JSON.stringify(data)
-          }
-          client.appConf.create(record).then(()=>{
-            sendSuccessNotification('Record Added')
-            refresh();
-          }).catch(()=>{
-            sendFailureNotification('Failed')
-          });
-
-      }
-
+    let newData = {id: `${branchCode}`, campaign, branchCode, nodeflow, dateAdded: new Date().toISOString()};
+    addRecord(newData).then(()=>{
+      sendSuccessNotification('Record Added');
+      refresh();
     })
     .catch((e)=>{
-      console.log('FAILED TO GET APP CONF DATA, before save')
-      console.log(e)
+      sendFailureNotification('Error occured while adding record');
     })
-
   }
 
   return (
@@ -128,6 +61,10 @@ export const Adder = ({ campaigns, refresh }) => {
     </div>
     <div className="form">
       <div className="form-fields"> 
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+          <TextField id="field-branch-code" label="Branch Code" variant="standard" value={branchCode} onChange={(e)=>handleChange('branchCode', e)} />
+        </FormControl>
+
         <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
           <InputLabel id="field-campaign-label">Campaign</InputLabel>
           <Select
@@ -146,10 +83,6 @@ export const Adder = ({ campaigns, refresh }) => {
               ))
             }
           </Select>
-        </FormControl>
-
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-          <TextField id="field-branch-code" label="Branch Code" variant="standard" value={branchCode} onChange={(e)=>handleChange('branchCode', e)} />
         </FormControl>
 
         <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>

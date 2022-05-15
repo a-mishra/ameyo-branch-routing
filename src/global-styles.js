@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { layout } from './utils/utils';
+import { layout } from './utils/helper';
 
 const fontColors = {
   head1: '#141416',

@@ -5,8 +5,9 @@ import { Global } from '@emotion/react'
 import { Adder } from "./components/adder";
 import { Editor } from "./components/editor";
 import globalStyles from "./global-styles";
-import {sendSuccessNotification, sendFailureNotification, constants} from './utils/helper';
+import {sendSuccessNotification, sendFailureNotification} from './utils/helper';
 import {getRecord} from './utils/logic';
+import {constants} from './utils/constants'
 
 
 const App = () => {
@@ -75,6 +76,16 @@ const App = () => {
     //   console.log('FAILED TO GET APP CONF DATA, tableRefersh')
     //   console.log(e)
     // })
+
+    getRecord()
+    .then((data)=>{
+      console.log('dataRecieved from getRecords')
+      settableData(data);
+    })
+    .catch((e)=>{
+      console.log('FAILED TO GET APP CONF DATA, tableRefersh')
+      console.log(e)
+    })
 
   }
 

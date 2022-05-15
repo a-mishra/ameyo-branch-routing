@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { colors } from "../utils/utils";
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-import {sendSuccessNotification, sendFailureNotification, constants} from '../utils/utils'
-
+import {sendSuccessNotification, sendFailureNotification, layout} from '../utils/helper'
+import {constants, colors} from '../utils/constants'
 
 export const Adder = ({ campaigns, refresh }) => {
 
@@ -129,7 +128,7 @@ export const Adder = ({ campaigns, refresh }) => {
     </div>
     <div className="form">
       <div className="form-fields"> 
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
           <InputLabel id="field-campaign-label">Campaign</InputLabel>
           <Select
             labelId="field-campaign-label"
@@ -149,11 +148,11 @@ export const Adder = ({ campaigns, refresh }) => {
           </Select>
         </FormControl>
 
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
           <TextField id="field-branch-code" label="Branch Code" variant="standard" value={branchCode} onChange={(e)=>handleChange('branchCode', e)} />
         </FormControl>
 
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
           <InputLabel id="field-nodeflow-label">Nodeflow</InputLabel>
           <Select
             labelId="field-nodeflow-label"
@@ -193,6 +192,8 @@ const Wrapper = styled.div`
     background: ${colors.neutral};
     position: relative;
 
+
+
     .module-name {
       position: absolute;
       top: 0px;
@@ -214,6 +215,10 @@ const Wrapper = styled.div`
     .form {
       position: absolute;
       padding-bottom: 100px;
+       @media only screen and (max-width: 1200px) {
+         padding-top: 64px;
+         padding-bottom: 64px;
+        }
       display: grid;
       align-items: center;
       justify-content: center;
@@ -221,6 +226,11 @@ const Wrapper = styled.div`
       .form-fields {
         display: grid;
         grid-template-columns: 1fr;
+
+         @media only screen and (max-width: 1200px) {
+            grid-template-columns: repeat(3, 250px);
+          }
+        
         grid-row-gap: 24px;
       }
 

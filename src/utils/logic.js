@@ -1,6 +1,6 @@
 import {constants} from './constants'
 
-const getRecord = () => {
+export const getRecord = () => {
     let prom = new Promise((resolve, reject)=>{
         let client = window.AmeyoClient.init();
 

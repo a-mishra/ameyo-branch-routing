@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {colors} from './utils/utils.js'
+import {colors} from './utils/constants'
 
 const outerTheme = createTheme({
   palette: {

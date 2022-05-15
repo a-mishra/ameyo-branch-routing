@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import styled from '@emotion/styled'
-import { colors } from "../utils/utils";
+import { colors } from "../utils/constants";
+
 import Button from '@mui/material/Button';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
